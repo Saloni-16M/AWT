@@ -1,25 +1,27 @@
 <?php
-session_start(); // Ensure this is at the top
-include 'C:/xampp/htdocs/stuck_off/includes/db_connection.php'; // Adjust path if needed
+session_start();
+include 'C:/xampp/htdocs/AWT/includes/db_connection.php'; // Adjust path if needed
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
     
+    // Prepare and execute the SQL statement
     $stmt = $conn->prepare("SELECT id, password, level FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
     
     if ($stmt->num_rows > 0) {
+        // Bind result variables
         $stmt->bind_result($user_id, $stored_password, $level);
         $stmt->fetch();
         
-        // Compare plain passwords (if not hashed)
+        // Direct comparison of plain text passwords
         if ($password === $stored_password) {
             $_SESSION['user_id'] = $user_id;
             $_SESSION['level'] = $level;
-            header("Location: /stuck_off/level1/index.php"); // Redirect to level1 after login
+            header("Location: /AWT/level1/index.php"); // Redirect to level1 after login
             exit();
         } else {
             $error = "Invalid username or password.";
@@ -27,8 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $error = "Invalid username or password.";
     }
+    
+    $stmt->close();
 }
+
+$conn->close();
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
