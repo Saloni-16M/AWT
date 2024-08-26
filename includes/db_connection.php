@@ -3,7 +3,7 @@ $host = 'localhost';
 $user = 'root';
 $password = '';
 $dbname = 'college_data';
-$port="3306";
+$port="3307";
 $conn = new mysqli($host, $user, $password, $dbname,$port);
 
 if ($conn->connect_error) {

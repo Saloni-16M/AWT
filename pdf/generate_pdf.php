@@ -11,13 +11,14 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if (!isset($_POST['roll_no'])) {
+if (!isset($_GET['roll_no']) || empty(trim($_GET['roll_no']))) {
     die("Roll number is required.");
 }
 
-$roll_no = htmlspecialchars(trim($_POST['roll_no']), ENT_QUOTES, 'UTF-8');
+$roll_no = htmlspecialchars(trim($_GET['roll_no']), ENT_QUOTES, 'UTF-8');
 
-$query = "SELECT students.name, students.roll_no, students.status, remarks.remark, remarks.level, users.username 
+// Update SQL query to include the created_at column
+$query = "SELECT students.name, students.roll_no, students.status, remarks.remark, remarks.level, users.username, remarks.created_at 
           FROM students 
           INNER JOIN remarks ON students.id = remarks.student_id 
           INNER JOIN users ON remarks.user_id = users.id 
@@ -27,10 +28,16 @@ $query = "SELECT students.name, students.roll_no, students.status, remarks.remar
 if ($stmt = $conn->prepare($query)) {
     $stmt->bind_param("s", $roll_no);
     $stmt->execute();
-    $stmt->bind_result($name, $roll_no, $status, $remark, $level, $username);
+    $stmt->bind_result($name, $roll_no, $status, $remark, $level, $username, $created_at);
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
+        $stmt->fetch(); // Fetch the initial row
+
+        // Debug: Check if variables are populated correctly
+        error_log("Name: $name, Roll No: $roll_no, Status: $status");
+
+        // Create PDF
         $pdf = new FPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial', 'B', 16);
@@ -44,24 +51,23 @@ if ($stmt = $conn->prepare($query)) {
         $pdf->Ln(10);
         $pdf->Cell(0, 10, "Remarks:", 0, 1);
 
-        while ($stmt->fetch()) {
-            $pdf->Cell(0, 10, "Level $level - $username: $remark", 0, 1);
-        }
+        // Add remarks to the PDF with timing
+        do {
+            // Format the created_at timestamp
+            $formatted_date = date('Y-m-d H:i:s', strtotime($created_at));
+            $pdf->Cell(0, 10, "Level $level - $username: $remark (Added on: $formatted_date)", 0, 1);
+        } while ($stmt->fetch());
 
-        // Add timestamp
+        // Add timestamp for PDF generation
         $pdf->Ln(10);
         $pdf->Cell(0, 10, "Generated on: " . date('Y-m-d H:i:s'), 0, 1);
 
         $stmt->close();
 
-        // Set headers and output PDF
+        // Output PDF
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="Student_Strike_Off_Report.pdf"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . strlen($pdf->Output('S')));
-
-        // Output the PDF
-        $pdf->Output('D', 'Student_Strike_Off_Report.pdf');
+        $pdf->Output();
         exit();
 
     } else {
@@ -73,4 +79,3 @@ if ($stmt = $conn->prepare($query)) {
 
 $conn->close();
 ?>
-
