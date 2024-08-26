@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $stmt->close();
 
-    echo "<div class='alert alert-success' role='alert'>Remark added successfully.</div>";
+    echo "<div class='alert alert-success text-center' role='alert'>Remark added successfully.</div>";
 }
 
 // Fetch students waiting for Level 3 verification
@@ -30,7 +30,7 @@ $result = $conn->query("SELECT s.id, s.roll_no, s.name FROM students s JOIN rema
 <body>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Deputy Registrar - Review Student Details</h2>
-        <form method="post" action="index.php">
+        <form method="post" action="index.php" class="p-4 border rounded bg-light">
             <div class="mb-3">
                 <label for="student_id" class="form-label">Select Student:</label>
                 <select id="student_id" name="student_id" class="form-select" required>
@@ -41,11 +41,16 @@ $result = $conn->query("SELECT s.id, s.roll_no, s.name FROM students s JOIN rema
             </div>
             <div class="mb-3">
                 <label for="remark" class="form-label">Remark:</label>
-                <textarea id="remark" name="remark" class="form-control" rows="3" required></textarea>
+                <textarea id="remark" name="remark" class="form-control" rows="4" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-yW5BFpXyH0O2txrF9F7fV2C5WphzU2Qz4z3v6q7F5qhbW8/+5HYi2spk0n6IHxY2" crossorigin="anonymous"></script>
+    <div class="container mt-5 text-center">
+        <!-- Button that links to the approval status page -->
+        <a href="../approval_status.php" class="btn btn-primary btn-lg">
+            View Student Approval Status
+        </a>
+    </div>
 </body>
 </html>

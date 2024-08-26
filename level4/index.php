@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $update_stmt->execute();
         $update_stmt->close();
 
-        echo "Student status updated successfully.";
+        echo "<div class='alert alert-success text-center' role='alert'>Student status updated successfully</div>";
     } elseif (isset($_POST['generate_pdf'])) {
         // Redirect to generate PDF
         $roll_no = isset($_POST['roll_no']) ? trim($_POST['roll_no']) : '';
@@ -70,6 +70,12 @@ $result = $conn->query("SELECT s.id, s.roll_no, s.name FROM students s JOIN rema
                 </div>
             </form>
         </div>
+        <div class="container mt-5 text-center">
+        <!-- Button that links to the approval status page -->
+        <a href="../approval_status.php" class="btn btn-primary btn-lg">
+            View Student Approval Status
+        </a>
+    </div>
         <div class="container-fluid mt-5">
             <h1 class="text-center mb-5">List of Students</h1>
             <div class="d-flex flex-wrap justify-content-around mb-3">

@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $stmt->close();
 
-    echo "<div class='alert alert-success' role='alert'>Remark added successfully.</div>";
+    echo "<div class='alert alert-success text-center' role='alert'>Remark added successfully.</div>";
 }
 
 // Fetch students waiting for Level 2 verification
@@ -45,6 +45,12 @@ $result = $conn->query("SELECT s.id, s.roll_no, s.name FROM students s JOIN rema
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+    </div>
+    <div class="container mt-5 text-center">
+        <!-- Button that links to the approval status page -->
+        <a href="../approval_status.php" class="btn btn-primary btn-lg">
+            View Student Approval Status
+        </a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-yW5BFpXyH0O2txrF9F7fV2C5WphzU2Qz4z3v6q7F5qhbW8/+5HYi2spk0n6IHxY2" crossorigin="anonymous"></script>
 </body>
