@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include 'C:/xampp/htdocs/stuck_off/includes/db_connection.php'; // Adjust path if needed
+include 'C:/xampp/htdocs/AWT/includes/db_connection.php'; // Adjust path if needed
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Dealing Hand - Student Strike Off</title>
-    <!-- Add your CSS here 
+     Add your CSS here 
 </head>
 <body>
     <h2>Dealing Hand - Enter Student Details</h2>
@@ -78,21 +78,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    <h1 class="text-center">GNDEC</h1>
+<h1 class="text-center">GNDEC</h1>
     <div class="container">
-    <form action="index.php" method="post">
-     <label for="roll_no">Roll_number</label>
-     <input type="number" name="roll_no" class="form-control" required>
-     <label for="remark">Remarks</label>
-     <textarea name="remark" id="remark" rows="3" cols="3" class="form-control" name="remark" required></textarea>
-     <div class="d-grid mt-3">
-      <button type="submit" class="btn btn-primary btn-block">Submit</button>
-    </div>
-    </form>
-    <div class="container mt-5">
-      <div class="d-grid">
-       <button type="button" class="btn btn-success btn-block"><a href="generate_pdf.php" class="text-decoration-none text-white">Approve</a></button>
-      </div>
+        <form action="index.php" method="post">
+            <label for="roll_no">Roll Number</label>
+            <input type="number" name="roll_no" class="form-control" id="roll_no" required>
+            <label for="remark">Remarks</label>
+            <textarea name="remark" id="remark" rows="3" cols="3" class="form-control" required></textarea>
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+        </form>
+
+        <div class="container mt-5">
+            <form action="../pdf/generate_pdf.php" method="post" onsubmit="return setApprovalRollNumber()">
+                <input type="hidden" name="roll_no" id="approval_roll_no"> <!-- Hidden field to store roll number -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-block">Approve</button>
+                </div>
+            </form>
+        </div>
     </div>
     <!-- <div class="container-fluid mt-5">
       <h1 class="text-center mb-5">List of your searched student </h1>
@@ -138,5 +143,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    
     <!-- </div> -->
   </div>
+  <script>
+        function setApprovalRollNumber() {
+            const rollNo = document.getElementById('roll_no').value;
+            if (rollNo.trim() === "") {
+                alert('Roll number is required.');
+                return false; // Prevent form submission
+            }
+            document.getElementById('approval_roll_no').value = rollNo;
+            return true; // Allow form submission
+        }
+    </script>
+
 </body>
 </html>
