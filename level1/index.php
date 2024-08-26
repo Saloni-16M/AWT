@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $insert_stmt->bind_param("iis", $student_id, $user_id, $remark);
         
         if ($insert_stmt->execute()) {
-            echo "Remark added successfully.";
+            echo "<div class='alert alert-success text-center' role='alert'>Remark added successfully.</div>";
         } else {
             echo "Failed to add remark. Error: " . $insert_stmt->error;
         }
@@ -89,6 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
             </div>
         </form>
+    </div>
+    <div class="container mt-5 text-center">
+        <!-- Button that links to the approval status page -->
+        <a href="../approval_status.php" class="btn btn-primary btn-lg">
+            View Student Approval Status
+        </a>
     </div>
     <!-- <div class="container-fluid mt-5">
       <h1 class="text-center mb-5">List of your searched student </h1>

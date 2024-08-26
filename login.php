@@ -24,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: /AWT/level$level/index.php"); // Redirect to level1 after login
             exit();
         } else {
-            $error = "Invalid username or password.";
+            $error = "<p class='text-center'>Invalid username or password.</p>";
         }
     } else {
-        $error = "Invalid username or password.";
+        $error = "<p class='text-center'>Invalid username or password.</p>";
     }
     
     $stmt->close();
@@ -47,7 +47,7 @@ $conn->close();
 </head>
 <body>
     <div class="login-container">
-        <h2>Login</h2>
+        <h2 class="text-center">Login</h2>
         <?php if (isset($error)) echo "<p>$error</p>"; ?>
         <form method="post" action="login.php">
             <!-- <label for="username">Username:</label>
