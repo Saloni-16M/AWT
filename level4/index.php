@@ -47,7 +47,35 @@ $result = $conn->query("SELECT s.id, s.roll_no, s.name FROM students s JOIN rema
         </select>
         <label for="remark">Final Remark:</label>
         <textarea id="remark" name="remark" required></textarea>
-        <button type="submit">Approve and Generate PDF</button>
     </form>
+    <div class="container mt-5">
+            <form action="../pdf/generate_pdf.php" method="post" onsubmit="return setApprovalRollNumber()">
+                <input type="hidden" name="roll_no" id="approval_roll_no"> <!-- Hidden field to store roll number -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-block">Approve</button>
+                </div>
+            </form>
+        </div>
+        <script>
+function setApprovalRollNumber() {
+    // Get the selected option from the dropdown
+    var selectElement = document.getElementById('student_id');
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    
+    // Extract the roll number from the selected option's text
+    var selectedText = selectedOption.text;
+    var rollNumber = selectedText.split(' - ')[0];
+
+    // Check if the roll number is empty
+    if (rollNumber.trim() === "") {
+        alert('Roll number is required.');
+        return false; // Prevent form submission
+    }
+    
+    // Set the roll number to the hidden input field
+    document.getElementById('approval_roll_no').value = rollNumber;
+    return true; // Allow form submission
+}
+    </script>
 </body>
 </html>
