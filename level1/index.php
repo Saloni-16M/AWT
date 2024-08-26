@@ -89,15 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
             </div>
         </form>
-
-        <div class="container mt-5">
-            <form action="../pdf/generate_pdf.php" method="post" onsubmit="return setApprovalRollNumber()">
-                <input type="hidden" name="roll_no" id="approval_roll_no"> <!-- Hidden field to store roll number -->
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-success btn-block">Approve</button>
-                </div>
-            </form>
-        </div>
     </div>
     <!-- <div class="container-fluid mt-5">
       <h1 class="text-center mb-5">List of your searched student </h1>
@@ -143,17 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    
     <!-- </div> -->
   </div>
-  <script>
-        function setApprovalRollNumber() {
-            const rollNo = document.getElementById('roll_no').value;
-            if (rollNo.trim() === "") {
-                alert('Roll number is required.');
-                return false; // Prevent form submission
-            }
-            document.getElementById('approval_roll_no').value = rollNo;
-            return true; // Allow form submission
-        }
-    </script>
 
 </body>
 </html>

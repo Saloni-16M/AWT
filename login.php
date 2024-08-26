@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($password === $stored_password) {
             $_SESSION['user_id'] = $user_id;
             $_SESSION['level'] = $level;
-            header("Location: /AWT/level1/index.php"); // Redirect to level1 after login
+            header("Location: /AWT/level$level/index.php"); // Redirect to level1 after login
             exit();
         } else {
             $error = "Invalid username or password.";
